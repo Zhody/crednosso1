@@ -1,3 +1,4 @@
+<?php $render('header'); ?>
 <h1><?php echo $title_page;?></h1>
 <form method="POST" action="<?php echo $base; ?>/shipping/edit/<?php echo $shipping[0]['id']; ?>">
     <div>
@@ -24,3 +25,4 @@
         <a href="<?php echo $base; ?>/shipping">[VOLTAR]</a>
     </div>
 </form>
+<?php $render('footer'); ?>

@@ -1,3 +1,4 @@
+<?php $render('header'); ?>
 <h1><?php echo $title_page; ?></h1>
 <a href="<?php echo $base; ?>/contestation/add">[ADICIONAR]</a>
 <a href="<?php echo $base; ?>/">[VOLTAR]</a>
@@ -40,3 +41,4 @@
 <?php else: ?>
     <p>Nada a mostrar!</p>
 <?php endif; ?>
+<?php $render('footer'); ?>

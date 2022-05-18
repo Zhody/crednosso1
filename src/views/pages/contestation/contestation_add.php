@@ -1,3 +1,4 @@
+<?php $render('header'); ?>
 <h1><?php echo $title_page;?></h1>
 <form method="POST" enctype='multipart/form-data' action="<?php echo $base; ?>/contestation/add">
     <div>
@@ -40,3 +41,4 @@
         <a href="<?php echo $base; ?>/contestation">[VOLTAR]</a>
     </div>
 </form>
+<?php $render('footer'); ?>
