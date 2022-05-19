@@ -42,7 +42,6 @@ class AtmController extends Controller {
     }
 
     public function editAction($args){
-        print_r($_POST);die();
         if(!isset($args)){
             $this->redirect('/atm', ['error'=>'Precisamos de um ID para continuar.']);
         }

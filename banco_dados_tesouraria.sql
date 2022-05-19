@@ -308,20 +308,36 @@ INSERT INTO `authorized_token` (`id`, `id_user`, `token`, `datetime_access`, `ac
 	(53, 1, '$2y$10$4DBDZnOtOiu4L6lBiOH/Demz00Wr5nTfogjwLzLWroq2CVQEsv2u2', '2021-10-12 10:32:19', 'Y');
 /*!40000 ALTER TABLE `authorized_token` ENABLE KEYS */;
 
--- Copiando estrutura para tabela crednosso.batch
-CREATE TABLE IF NOT EXISTS `batch` (
-  `id` int(11) NOT NULL,
+-- Copiando estrutura para tabela crednosso.batchs
+CREATE TABLE IF NOT EXISTS `batchs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_type` int(11) DEFAULT NULL,
   `batch` varchar(100) DEFAULT NULL,
-  `type` varchar(50) DEFAULT NULL,
-  `status` set('open','paused','closed') DEFAULT 'open',
+  `status` int(11) DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela crednosso.batch: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `batch` DISABLE KEYS */;
-INSERT INTO `batch` (`id`, `batch`, `type`, `status`) VALUES
-	(0, '1649163903', NULL, 'paused');
-/*!40000 ALTER TABLE `batch` ENABLE KEYS */;
+-- Copiando dados para a tabela crednosso.batchs: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `batchs` DISABLE KEYS */;
+INSERT INTO `batchs` (`id`, `id_type`, `batch`, `status`) VALUES
+	(1, 1, '1649163903', 1);
+/*!40000 ALTER TABLE `batchs` ENABLE KEYS */;
+
+-- Copiando estrutura para tabela crednosso.batch_statuss
+CREATE TABLE IF NOT EXISTS `batch_statuss` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `status` enum('Y','N') DEFAULT 'Y',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- Copiando dados para a tabela crednosso.batch_statuss: ~2 rows (aproximadamente)
+/*!40000 ALTER TABLE `batch_statuss` DISABLE KEYS */;
+INSERT INTO `batch_statuss` (`id`, `name`, `status`) VALUES
+	(1, 'open', 'Y'),
+	(2, 'close', 'Y'),
+	(3, 'paused', 'Y');
+/*!40000 ALTER TABLE `batch_statuss` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela crednosso.contestations
 CREATE TABLE IF NOT EXISTS `contestations` (
@@ -340,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `contestations` (
 /*!40000 ALTER TABLE `contestations` DISABLE KEYS */;
 INSERT INTO `contestations` (`id`, `name`, `card`, `num_contest_system`, `date`, `type`, `active`, `status`) VALUES
 	(17, 'DAYSE MIRANDA', '6312919951285052', '453591', '2022-04-22', 'mateus', 'Y', 'open'),
-	(27, 'Doidao', '6312457896587451', '52154', '2011-01-11', 'mateus', 'Y', 'open');
+	(27, 'Doidao Sim', '6312457896587451', '52154', '2011-01-11', 'mateus', 'Y', 'open');
 /*!40000 ALTER TABLE `contestations` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela crednosso.images
@@ -353,14 +369,15 @@ CREATE TABLE IF NOT EXISTS `images` (
   `active` enum('Y','N') DEFAULT 'Y',
   PRIMARY KEY (`id`),
   UNIQUE KEY `hash` (`hash`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela crednosso.images: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela crednosso.images: ~4 rows (aproximadamente)
 /*!40000 ALTER TABLE `images` DISABLE KEYS */;
 INSERT INTO `images` (`id`, `path`, `id_contestation`, `path_image`, `hash`, `active`) VALUES
-	(54, '02e74f10e0327ad868d138f2b4fdd6f0', 27, 'caixa crednosso part. 1', '25981d834ac845951e2b00d0fa87c44d.avi', 'Y'),
-	(55, '02e74f10e0327ad868d138f2b4fdd6f0', 27, 'caixa crednosso part.2', '120c326234bf5b3a5df014bc9bbee260.avi', 'Y'),
-	(56, '02e74f10e0327ad868d138f2b4fdd6f0', 27, 'caixa crednosso part.3', '35a3dd5fc0c5a58a8cebd52ac021fab8.avi', 'Y');
+	(54, '02e74f10e0327ad868d138f2b4fdd6f0', 27, 'caixa crednosso part. 1', '25981d834ac845951e2b00d0fa87c44d.avi', 'N'),
+	(55, '02e74f10e0327ad868d138f2b4fdd6f0', 27, 'caixa crednosso part.2', '120c326234bf5b3a5df014bc9bbee260.avi', 'N'),
+	(56, '02e74f10e0327ad868d138f2b4fdd6f0', 27, 'caixa crednosso part.3', '35a3dd5fc0c5a58a8cebd52ac021fab8.avi', 'Y'),
+	(58, '02e74f10e0327ad868d138f2b4fdd6f0', 27, 'Novo Documento de Texto', '472731b33e78d174ca5f3ec3bd7b7d4c.txt', 'N');
 /*!40000 ALTER TABLE `images` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela crednosso.input_type
