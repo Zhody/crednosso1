@@ -30,7 +30,14 @@ $router->get('/contestation/disable/{id}', 'ContestationController@disable');
 $router->get('/contestation/enable/{id}', 'ContestationController@enable');
 
 // FIM DAS ROTAS DE CONTESTAÇOES
+
+// ROTAS DE LOTE
 $router->get('/batch', 'BatchController@index');
+// FIM DAS ROTAS DE LOTE
+
+// ROTAS DE ATM
+$router->get('/atm', 'AtmController@index');
+
+//FIM DAS ROTAS DE ATM
 $router->get('/supplies', 'SuppliesController@index');
-$router->get('/atms', 'AtmsController@index');
 //$router->get('/sobre/{nome}', 'HomeController@sobreP');
