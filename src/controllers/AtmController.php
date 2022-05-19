@@ -41,4 +41,25 @@ class AtmController extends Controller {
     
     }
 
+
+    public function enable($args){
+        if(!isset($args)){
+            $this->redirect('/atm', ['error'=>'Precisamos de um ID para continuar']);
+        }
+
+        Atm::update()->set('status', 'Y')->where('id_atm', $args['id'])->execute();
+
+        $this->redirect('/atm', ['success'=>'Ativado com sucesso.']);
+    }
+
+    public function disable($args){
+        if(!isset($args)){
+            $this->redirect('/atm', ['error'=>'Precisamos de um ID para continuar']);
+        }
+
+        Atm::update()->set('status', 'N')->where('id_atm', $args['id'])->execute();
+
+        $this->redirect('/atm', ['success'=>'Desativado com sucesso.']);
+    }
+
 }
