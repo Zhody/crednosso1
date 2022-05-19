@@ -15,6 +15,7 @@
             <li><a href="<?php echo $base; ?>/contestation">CONTESTAÇÕES</a></li>
             <li><a href="<?php echo $base; ?>/supplie">ABASTECIMENTOS</a></li>
             <li><a href="<?php echo $base; ?>/batch">LOTE</a></li>
+            <li><a href="<?php echo $base; ?>/treasury">SALDOS</a></li>
             <li><a href="<?php echo $base; ?>/request">PEDIDOS</a></li>
             <li><a href="<?php echo $base; ?>/atm">ATMS</a></li>
         </ul>

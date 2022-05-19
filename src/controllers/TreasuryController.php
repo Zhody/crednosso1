@@ -12,9 +12,13 @@ class TreasuryController extends Controller {
         if(count($treasurys) == 0){
             $treasurys = null;
         }
+        foreach($treasurys as $key => $treasury){
+            $sh = Shipping::select()->where('id_shipping', $treasury['id_shipping'])->execute();
+            $treasurys[$key]['name_shipping'] = $sh[0]['name_shipping']; 
+        }
        $this->render('treasury' , [
-            'title_page' => 'Saldos de tesourarias',
-            'treasury' => $treasurys
+            'title_page' => 'Saldo de tesourarias',
+            'treasurys' => $treasurys
         ]);
     }
 
