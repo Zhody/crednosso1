@@ -1,6 +1,6 @@
 <?php $render('header');  ?>
 <h1><?php echo $title_page;  ?></h1>
-<form>
+<form method="POST" action="<?php echo $base; ?>/atm/edit/<?php echo $atm[0]['id_atm'];  ?>" >
     <div>
         <label>ID</label>
         <input type="number" name="id_atm" id="id_atm" value="<?php echo $atm[0]['id_atm']; ?>" />

@@ -41,6 +41,38 @@ class AtmController extends Controller {
     
     }
 
+    public function editAction($args){
+        print_r($_POST);die();
+        if(!isset($args)){
+            $this->redirect('/atm', ['error'=>'Precisamos de um ID para continuar.']);
+        }
+
+        $id_atm = filter_input(INPUT_POST, 'id_atm');
+        $name_atm = filter_input(INPUT_POST, 'name_atm');
+        $shortened_atm = filter_input(INPUT_POST, 'shortened_atm');
+        $id_treasury = filter_input(INPUT_POST, 'id_treasury');
+        $status_atm = filter_input(INPUT_POST, 'status_atm');
+        $cass_A = filter_input(INPUT_POST, 'cass_A');
+        $cass_B = filter_input(INPUT_POST, 'cass_B');
+        $cass_C = filter_input(INPUT_POST, 'cass_C');
+        $cass_D = filter_input(INPUT_POST, 'cass_D');
+
+        if($id_atm && $name_atm && $shortened_atm &&
+            $id_treasury && $status_atm && $cass_A &&
+            $cass_B && $cass_C && $cass_D){
+                Atm::update()->set('id_atm', $id_atm)
+                ->set('id_treasury', $id_treasury)
+                ->set('name_atm', $name_atm)
+                ->set('shortened_name_atm', $shortened_atm)
+                ->set('cass_A', $cass_A)->set('cass_B', $cass_B)
+                ->set('cass_C', $cass_C)->set('cass_D', $cass_D)
+                ->set('status', $status_atm)->where('id_atm', $args['id'])
+                ->execute();;
+        }
+        $this->redirect('/atm/edit/'.$args['id']);
+
+    }
+
 
     public function enable($args){
         if(!isset($args)){
