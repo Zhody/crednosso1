@@ -25,7 +25,7 @@
                         <?php else: ?>
                             <a href="<?php echo $base; ?>/shipping/enable/<?php echo $shipping['id_shipping']; ?>">[ATIVAR]</a>
                         <?php endif; ?>
-                        <a>[SALDO]</a>
+                        <a href="<?php echo $base; ?>/treasury/add/<?php echo $shipping['id_shipping']; ?>">[SALDO]</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

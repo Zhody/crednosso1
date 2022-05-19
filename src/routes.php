@@ -15,6 +15,11 @@ $router->get('/shipping/disable/{id}', 'ShippingController@disable');
 $router->get('/shipping/enable/{id}', 'ShippingController@enable');
 // FIM DAS ROTAS DE SHIPPING
 
+// ROTAS DE TESOURARIA
+$router->get('/treasury', 'TreasuryController@index');
+$router->get('/treasury/add/{id}', 'TreasuryController@add');
+$router->post('/treasury/add/{id}', 'TreasuryController@addAction');
+
 // ROTAS DE CONTESTACOES
 $router->get('/contestation', 'ContestationController@index');
 $router->get('/contestation/add', 'ContestationController@add');
