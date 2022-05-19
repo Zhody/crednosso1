@@ -24,6 +24,8 @@ $router->post('/treasury/add/{id}', 'TreasuryController@addAction');
 $router->get('/contestation', 'ContestationController@index');
 $router->get('/contestation/add', 'ContestationController@add');
 $router->post('/contestation/add', 'ContestationController@addAction');
+$router->get('/contestation/edit/{id}', 'ContestationController@edit');
+$router->post('/contestation/edit/{id}', 'ContestationController@editAction');
 $router->get('/contestation/disable/{id}', 'ContestationController@disable');
 $router->get('/contestation/enable/{id}', 'ContestationController@enable');
 

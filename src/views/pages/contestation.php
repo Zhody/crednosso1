@@ -27,7 +27,7 @@
                     <td><?php echo $contestation['status']; ?></td>
                     <td><?php echo $contestation['active']; ?></td>
                     <td>
-                        <a>[EDITAR]</a>
+                        <a href="<?php echo $base; ?>/contestation/edit/<?php echo $contestation['id']; ?>">[EDITAR]</a>
                         <?php if($contestation['active'] == 'Y'): ?>
                             <a href="<?php echo $base; ?>/contestation/disable/<?php echo $contestation['id']; ?>">[INATIVAR]</a>
                         <?php else: ?>
