@@ -30,6 +30,7 @@ $router->get('/contestation/disable/{id}', 'ContestationController@disable');
 $router->get('/contestation/enable/{id}', 'ContestationController@enable');
 
 // FIM DAS ROTAS DE CONTESTAÇOES
+$router->get('/batch', 'BatchController@index');
 $router->get('/supplies', 'SuppliesController@index');
 $router->get('/atms', 'AtmsController@index');
 //$router->get('/sobre/{nome}', 'HomeController@sobreP');
