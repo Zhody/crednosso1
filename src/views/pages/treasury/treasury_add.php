@@ -46,7 +46,7 @@
     </div>
 </div>
 <form method="POST" action="<?php echo $base; ?>/treasury/add/<?php echo $treasury[0]['id_shipping']; ?>">
-    <h3>SALDO A SER ADICIONADO</h3>
+    <h3>MOVIMENTAÇÃO DE SALDO</h3>
     <div>
         <label>R$ 10,00</label>
         <input type="number" attr-value="10" name="value_new_10" id="value_new_10" placeholder="0"  />

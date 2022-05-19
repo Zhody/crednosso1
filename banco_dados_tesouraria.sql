@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           10.4.22-MariaDB - mariadb.org binary distribution
+-- Versão do servidor:           10.4.21-MariaDB - mariadb.org binary distribution
 -- OS do Servidor:               Win64
--- HeidiSQL Versão:              11.1.0.6116
+-- HeidiSQL Versão:              11.3.0.6295
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -330,33 +330,38 @@ CREATE TABLE IF NOT EXISTS `contestations` (
   `card` varchar(16) DEFAULT NULL,
   `num_contest_system` varchar(50) DEFAULT NULL,
   `date` date DEFAULT NULL,
+  `type` set('mateus','bradesco') DEFAULT 'mateus',
   `active` enum('Y','N') NOT NULL DEFAULT 'Y',
   `status` set('open','close') NOT NULL DEFAULT 'open',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela crednosso.contestations: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela crednosso.contestations: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `contestations` DISABLE KEYS */;
-INSERT INTO `contestations` (`id`, `name`, `card`, `num_contest_system`, `date`, `active`, `status`) VALUES
-	(17, 'DAYSE MIRANDA', '6312919951285052', '453591', '2022-04-22', 'Y', 'open');
+INSERT INTO `contestations` (`id`, `name`, `card`, `num_contest_system`, `date`, `type`, `active`, `status`) VALUES
+	(17, 'DAYSE MIRANDA', '6312919951285052', '453591', '2022-04-22', 'mateus', 'Y', 'open'),
+	(27, 'Doidao', '6312457896587451', '52154', '2011-01-11', 'mateus', 'Y', 'open');
 /*!40000 ALTER TABLE `contestations` ENABLE KEYS */;
 
--- Copiando estrutura para tabela crednosso.image
-CREATE TABLE IF NOT EXISTS `image` (
+-- Copiando estrutura para tabela crednosso.images
+CREATE TABLE IF NOT EXISTS `images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_objection` int(11) DEFAULT 0,
+  `path` varchar(200) DEFAULT NULL,
+  `id_contestation` int(11) DEFAULT 0,
   `path_image` varchar(200) DEFAULT NULL,
   `hash` varchar(200) DEFAULT NULL,
   `active` enum('Y','N') DEFAULT 'Y',
   PRIMARY KEY (`id`),
   UNIQUE KEY `hash` (`hash`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela crednosso.image: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `image` DISABLE KEYS */;
-INSERT INTO `image` (`id`, `id_objection`, `path_image`, `hash`, `active`) VALUES
-	(53, 17, NULL, NULL, 'Y');
-/*!40000 ALTER TABLE `image` ENABLE KEYS */;
+-- Copiando dados para a tabela crednosso.images: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `images` DISABLE KEYS */;
+INSERT INTO `images` (`id`, `path`, `id_contestation`, `path_image`, `hash`, `active`) VALUES
+	(54, '02e74f10e0327ad868d138f2b4fdd6f0', 27, 'caixa crednosso part. 1', '25981d834ac845951e2b00d0fa87c44d.avi', 'Y'),
+	(55, '02e74f10e0327ad868d138f2b4fdd6f0', 27, 'caixa crednosso part.2', '120c326234bf5b3a5df014bc9bbee260.avi', 'Y'),
+	(56, '02e74f10e0327ad868d138f2b4fdd6f0', 27, 'caixa crednosso part.3', '35a3dd5fc0c5a58a8cebd52ac021fab8.avi', 'Y');
+/*!40000 ALTER TABLE `images` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela crednosso.input_type
 CREATE TABLE IF NOT EXISTS `input_type` (
@@ -576,7 +581,7 @@ CREATE TABLE IF NOT EXISTS `treasurys` (
   UNIQUE KEY `id_shipping` (`id_shipping`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela crednosso.treasurys: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela crednosso.treasurys: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `treasurys` DISABLE KEYS */;
 INSERT INTO `treasurys` (`id`, `id_shipping`, `a_10`, `b_20`, `c_50`, `d_100`, `balance`, `status`) VALUES
 	(1, 1, 300, 300, 300, 300, 54000, 'Y'),
@@ -609,6 +614,6 @@ INSERT INTO `users` (`id`, `name`, `username`, `email`, `password`, `nivel`, `to
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
