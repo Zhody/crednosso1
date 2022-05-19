@@ -37,6 +37,7 @@ $router->get('/batch', 'BatchController@index');
 
 // ROTAS DE ATM
 $router->get('/atm', 'AtmController@index');
+$router->get('/atm/edit/{id}', 'AtmController@edit');
 
 //FIM DAS ROTAS DE ATM
 $router->get('/supplies', 'SuppliesController@index');

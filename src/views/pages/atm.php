@@ -1,5 +1,6 @@
 <?php $render('header'); ?>
 <h1><?php echo $title_page; ?></h1>
+<a href="<?php echo $base; ?>/atm/add">[ADICIONAR]</a>
 <?php if($atms !== null): ?>
     <table width="100%" border="1">
         <thead>
