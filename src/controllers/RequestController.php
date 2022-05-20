@@ -5,6 +5,8 @@ use \core\Controller;
 use \src\models\Batch;
 use \src\models\Request;
 use \src\models\Shipping;
+use \src\models\Order_type as OrderType;
+use \src\models\Operation_type as OperationType;
 
 class RequestController extends Controller {
 
@@ -27,6 +29,32 @@ class RequestController extends Controller {
             'title_page' => 'Pedidos',
             'requests' => $requests
         ]);
+    }
+
+    public function add(){
+        $operationTypes = OperationType::select()->where('active', 'Y')->execute();
+        if(count($operationTypes) == 0){
+            $operationTypes = null;
+        }
+        $shippings = Shipping::select()->where('active', 'Y')->execute();
+        if(count($shippings) == 0){
+            $shippings = null;
+        }
+
+        $order_types = OrderType::select()->where('active', 'Y')->execute();
+        if(count($order_types) == 0){
+            $order_types = null;
+        }
+        $this->render('/request/request_add', [
+            'title_page' => 'Adicionar pedido',
+            'operation_types' => $operationTypes,
+            'shippings' => $shippings,
+            'order_types' => $order_types
+        ]);
+    } 
+
+    public function addAction(){
+        echo 'Faltando implementar a funçao';die();
     }
 
 }

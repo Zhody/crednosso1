@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           10.4.21-MariaDB - mariadb.org binary distribution
+-- Versão do servidor:           10.4.22-MariaDB - mariadb.org binary distribution
 -- OS do Servidor:               Win64
--- HeidiSQL Versão:              11.3.0.6295
+-- HeidiSQL Versão:              11.1.0.6116
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -331,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `batch_statuss` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela crednosso.batch_statuss: ~2 rows (aproximadamente)
+-- Copiando dados para a tabela crednosso.batch_statuss: ~3 rows (aproximadamente)
 /*!40000 ALTER TABLE `batch_statuss` DISABLE KEYS */;
 INSERT INTO `batch_statuss` (`id`, `name`, `status`) VALUES
 	(1, 'open', 'Y'),
@@ -426,8 +426,8 @@ INSERT INTO `log_treasury` (`id`, `id_shipping`, `id_input_type`, `value_process
 	(13, 1, 1, 18000, '2022-05-10 03:42:17', 'Y');
 /*!40000 ALTER TABLE `log_treasury` ENABLE KEYS */;
 
--- Copiando estrutura para tabela crednosso.operation_type
-CREATE TABLE IF NOT EXISTS `operation_type` (
+-- Copiando estrutura para tabela crednosso.operation_types
+CREATE TABLE IF NOT EXISTS `operation_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL DEFAULT '0',
   `active` enum('Y','N') NOT NULL DEFAULT 'Y',
@@ -435,18 +435,18 @@ CREATE TABLE IF NOT EXISTS `operation_type` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela crednosso.operation_type: ~5 rows (aproximadamente)
-/*!40000 ALTER TABLE `operation_type` DISABLE KEYS */;
-INSERT INTO `operation_type` (`id`, `name`, `active`) VALUES
+-- Copiando dados para a tabela crednosso.operation_types: ~5 rows (aproximadamente)
+/*!40000 ALTER TABLE `operation_types` DISABLE KEYS */;
+INSERT INTO `operation_types` (`id`, `name`, `active`) VALUES
 	(1, 'Transferencia entre custodia', 'Y'),
 	(2, 'Retirada loja', 'Y'),
 	(3, 'Entre tesourarias', 'Y'),
 	(4, 'Santander', 'Y'),
 	(5, 'Seret BB', 'Y');
-/*!40000 ALTER TABLE `operation_type` ENABLE KEYS */;
+/*!40000 ALTER TABLE `operation_types` ENABLE KEYS */;
 
--- Copiando estrutura para tabela crednosso.order_type
-CREATE TABLE IF NOT EXISTS `order_type` (
+-- Copiando estrutura para tabela crednosso.order_types
+CREATE TABLE IF NOT EXISTS `order_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL DEFAULT '0',
   `active` enum('Y','N') NOT NULL DEFAULT 'Y',
@@ -454,12 +454,12 @@ CREATE TABLE IF NOT EXISTS `order_type` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela crednosso.order_type: ~2 rows (aproximadamente)
-/*!40000 ALTER TABLE `order_type` DISABLE KEYS */;
-INSERT INTO `order_type` (`id`, `name`, `active`) VALUES
+-- Copiando dados para a tabela crednosso.order_types: ~2 rows (aproximadamente)
+/*!40000 ALTER TABLE `order_types` DISABLE KEYS */;
+INSERT INTO `order_types` (`id`, `name`, `active`) VALUES
 	(1, 'eventual', 'Y'),
 	(2, 'folha', 'Y');
-/*!40000 ALTER TABLE `order_type` ENABLE KEYS */;
+/*!40000 ALTER TABLE `order_types` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela crednosso.requests
 CREATE TABLE IF NOT EXISTS `requests` (
@@ -486,8 +486,8 @@ CREATE TABLE IF NOT EXISTS `requests` (
 -- Copiando dados para a tabela crednosso.requests: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `requests` DISABLE KEYS */;
 INSERT INTO `requests` (`id`, `id_batch`, `id_operation_type`, `id_origin`, `id_order_type`, `id_destiny`, `date_request`, `qt_10`, `qt_20`, `qt_50`, `qt_100`, `note`, `active`, `status`, `value_total`, `confirmed_value`, `change_in_confirmation`) VALUES
-	(41, 0, 2, 56, 1, 0, '2022-04-05', 100, 100, 100, 100, '', 'Y', 'open', 0, 0, 'N'),
-	(42, 0, 2, 76, 1, 0, '2022-04-05', 200, 200, 200, 200, 'sem OBS', 'Y', 'open', 0, 0, 'N');
+	(41, 1, 2, 56, 1, 0, '2022-04-05', 100, 100, 100, 100, '', 'Y', 'open', 0, 0, 'N'),
+	(42, 1, 2, 76, 1, 0, '2022-04-05', 200, 200, 200, 200, 'sem OBS', 'Y', 'open', 0, 0, 'N');
 /*!40000 ALTER TABLE `requests` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela crednosso.shippings
@@ -631,6 +631,6 @@ INSERT INTO `users` (`id`, `name`, `username`, `email`, `password`, `nivel`, `to
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
