@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           10.4.22-MariaDB - mariadb.org binary distribution
+-- Versão do servidor:           10.4.21-MariaDB - mariadb.org binary distribution
 -- OS do Servidor:               Win64
--- HeidiSQL Versão:              11.1.0.6116
+-- HeidiSQL Versão:              11.3.0.6295
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -313,14 +313,16 @@ CREATE TABLE IF NOT EXISTS `batchs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_type` int(11) DEFAULT NULL,
   `batch` varchar(100) DEFAULT NULL,
+  `date_batch` date DEFAULT NULL,
   `status` int(11) DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela crednosso.batchs: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela crednosso.batchs: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `batchs` DISABLE KEYS */;
-INSERT INTO `batchs` (`id`, `id_type`, `batch`, `status`) VALUES
-	(1, 1, '1649163903', 1);
+INSERT INTO `batchs` (`id`, `id_type`, `batch`, `date_batch`, `status`) VALUES
+	(1, 1, '1649163903', NULL, 1),
+	(2, 1, '02000062880d26cd7cb', '2022-05-20', 1);
 /*!40000 ALTER TABLE `batchs` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela crednosso.batch_statuss
@@ -476,19 +478,38 @@ CREATE TABLE IF NOT EXISTS `requests` (
   `qt_100` int(11) DEFAULT NULL,
   `note` text DEFAULT NULL,
   `active` enum('Y','N') NOT NULL DEFAULT 'Y',
-  `status` enum('open','closed') DEFAULT 'open',
+  `id_status` int(11) DEFAULT 1,
   `value_total` float DEFAULT 0,
   `confirmed_value` float DEFAULT 0,
   `change_in_confirmation` enum('Y','N') DEFAULT 'N',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
 -- Copiando dados para a tabela crednosso.requests: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `requests` DISABLE KEYS */;
-INSERT INTO `requests` (`id`, `id_batch`, `id_operation_type`, `id_origin`, `id_order_type`, `id_destiny`, `date_request`, `qt_10`, `qt_20`, `qt_50`, `qt_100`, `note`, `active`, `status`, `value_total`, `confirmed_value`, `change_in_confirmation`) VALUES
-	(41, 1, 2, 56, 1, 0, '2022-04-05', 100, 100, 100, 100, '', 'Y', 'open', 0, 0, 'N'),
-	(42, 1, 2, 76, 1, 0, '2022-04-05', 200, 200, 200, 200, 'sem OBS', 'Y', 'open', 0, 0, 'N');
+INSERT INTO `requests` (`id`, `id_batch`, `id_operation_type`, `id_origin`, `id_order_type`, `id_destiny`, `date_request`, `qt_10`, `qt_20`, `qt_50`, `qt_100`, `note`, `active`, `id_status`, `value_total`, `confirmed_value`, `change_in_confirmation`) VALUES
+	(41, 1, 2, 56, 1, 0, '2022-04-05', 100, 100, 100, 100, '', 'Y', 1, 0, 0, 'N'),
+	(42, 1, 2, 76, 1, 0, '2022-04-05', 200, 200, 200, 200, 'sem OBS', 'Y', 1, 0, 0, 'N'),
+	(43, 2, 2, 20, 1, 0, '2022-05-20', 100, 100, 100, 100, '', 'Y', 1, 18, 0, 'N');
 /*!40000 ALTER TABLE `requests` ENABLE KEYS */;
+
+-- Copiando estrutura para tabela crednosso.request_statuss
+CREATE TABLE IF NOT EXISTS `request_statuss` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL DEFAULT '0',
+  `status` enum('Y','N') NOT NULL DEFAULT 'Y',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+-- Copiando dados para a tabela crednosso.request_statuss: ~5 rows (aproximadamente)
+/*!40000 ALTER TABLE `request_statuss` DISABLE KEYS */;
+INSERT INTO `request_statuss` (`id`, `name`, `status`) VALUES
+	(1, 'aberto', 'Y'),
+	(2, 'confirmado', 'Y'),
+	(3, 'pago', 'Y'),
+	(4, 'relançado', 'Y'),
+	(5, 'cancelado', 'Y');
+/*!40000 ALTER TABLE `request_statuss` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela crednosso.shippings
 CREATE TABLE IF NOT EXISTS `shippings` (
@@ -499,9 +520,9 @@ CREATE TABLE IF NOT EXISTS `shippings` (
   `active` enum('Y','N') DEFAULT 'Y',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_shipping` (`id_shipping`)
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela crednosso.shippings: ~78 rows (aproximadamente)
+-- Copiando dados para a tabela crednosso.shippings: ~80 rows (aproximadamente)
 /*!40000 ALTER TABLE `shippings` DISABLE KEYS */;
 INSERT INTO `shippings` (`id`, `id_shipping`, `name_shipping`, `emails`, `active`) VALUES
 	(1, 1, 'MATEUS SUPERMERCADOS', 'taricisio.silva@crednosso.com.br', 'Y'),
@@ -581,7 +602,9 @@ INSERT INTO `shippings` (`id`, `id_shipping`, `name_shipping`, `emails`, `active
 	(77, 75, 'PROSEGUR FEIRA DE SANTANA', NULL, 'Y'),
 	(78, 76, 'MIX BENGUI', NULL, 'Y'),
 	(79, 77, 'TEXEIRA DE FREITAS', NULL, 'Y'),
-	(80, 78, 'MIX ITAPIPOCA', NULL, 'Y');
+	(80, 78, 'MIX ITAPIPOCA', NULL, 'Y'),
+	(81, 444, 'SANTANDER', 'TARCISIO.SILVA@CREDNOSSO.COM.BR', 'Y'),
+	(82, 555, 'SERET BB', 'DILLAN.SOUSA@CREDNOSSO.COM.BR', 'Y');
 /*!40000 ALTER TABLE `shippings` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela crednosso.treasurys
@@ -631,6 +654,6 @@ INSERT INTO `users` (`id`, `name`, `username`, `email`, `password`, `nivel`, `to
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

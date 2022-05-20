@@ -38,8 +38,8 @@ class ShippingController extends Controller {
              Shipping::insert([
                  "id_shipping" => $id_shipping,
                  "name_shipping" => $name_shipping,
-                 "emails_shipping" => $emails_shipping,
-                 "active_shipping" => $active_shipping
+                 "emails" => $emails_shipping,
+                 "active" => $active_shipping
              ])->execute();
 
              $this->redirect('/shipping', ["success" => "Transportadora inserida com sucesso!"]);

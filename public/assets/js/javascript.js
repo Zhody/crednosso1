@@ -39,7 +39,26 @@ function getShippingById(element){
   })
 }
 
-function saveAndConitnueRequest() {
-  console.log("Faltando implementar a funçao");
-  alert("Faltando implementar a funçao");
-}
+/*function saveAndConitnueRequest() {
+  let elements = document.querySelectorAll('.element')
+  console.log(elements.length)
+  const el = Array()
+  for(x=0; x <= elements.length; x++){
+    el.push(elements[x].name, elements[x].value)
+    //console.log(elements[x].name)
+  }
+  if(localStorage.getItem('request') === null){
+    localStorage.setItem('request', JSON.stringify([el]))
+  }else{
+    localStorage.getItem('request', 
+      JSON.stringify([
+        ...JSON.parse(localStorage.getItem('request')),
+        el
+      ])
+    )
+  }
+
+  for(x=0; x <= elements.length; x++ ){
+    elements[x].value = null;
+  }
+}*/

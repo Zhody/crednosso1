@@ -3,6 +3,7 @@ namespace src\controllers;
 
 use \core\Controller;
 use \src\models\Batch;
+use \src\models\Treasury;
 use \src\models\Request;
 use \src\models\Shipping;
 use \src\models\Order_type as OrderType;
@@ -54,7 +55,111 @@ class RequestController extends Controller {
     } 
 
     public function addAction(){
-        echo 'Faltando implementar a funçao';die();
+       // print_r($_POST);die();
+        $operation_type = filter_input(INPUT_POST, 'operation_type');
+        $id_origin = filter_input(INPUT_POST, 'id_origin');
+        $id_destiny = filter_input(INPUT_POST, 'id_destiny');
+        $date_request = filter_input(INPUT_POST, 'date_request');
+        $order_request = filter_input(INPUT_POST, 'order_request');
+        $note_request = filter_input(INPUT_POST, 'note_request');
+        $qt_10 = filter_input(INPUT_POST, 'qt_10');
+        $qt_20 = filter_input(INPUT_POST, 'qt_20');
+        $qt_50 = filter_input(INPUT_POST, 'qt_50');
+        $qt_100 = filter_input(INPUT_POST, 'qt_100');
+
+        
+        die();
+        if($operation_type && $id_origin && $date_request && $order_request 
+         && $qt_10 && $qt_20 && $qt_50 && $qt_100)
+        {
+            $arrayValues = [
+                '10' => ($qt_10) ? $qt_10 : 0,
+                '20' =>  ($qt_20) ? $qt_20 : 0,
+                '50' => ($qt_50) ? $qt_50 : 0,
+                '100' => ($qt_100) ? $qt_100 : 0
+            ];
+            $batch = Batch::select()->where('date_batch', $date_request)->execute();
+            $value_total = Request::gerateValueTotal($arrayValues);
+            if(count($batch) == 0){
+                $batchGerate = Batch::generateBatch($id_origin, $id_destiny);
+                Batch::insert([
+                    'id_type'=>'1',
+                    'batch' =>$batchGerate,
+                    'date_batch'=>$date_request,
+                    'status' => '1'
+                ])->execute();
+
+                $batch = Batch::select()->where('batch', $batchGerate)->execute();
+            }
+
+            Request::insert([
+                'id_batch' => $batch[0]['id'],
+                'id_operation_type' => $operation_type,
+                'id_origin' => $id_origin,
+                'id_order_type' => $order_request,
+                'id_destiny' => $id_destiny,
+                'date_request' => $date_request,
+                'qt_10' => $qt_10,
+                'qt_20' => $qt_20,
+                'qt_50' => $qt_50,
+                'qt_100' => $qt_100,
+                'note' => $note_request,
+                'active' => 'Y',
+                'id_status' => '1',
+                'value_total'=> $value_total,
+                'confirmed_value'=>'0',
+                'change_in_confirmation' => 'N'
+            ])->execute();
+            
+            if($id_destiny == 'null'){
+                $treaury = Treasury::select()->where('id_shipping', $id_origin)->execute();
+                if(count($treaury) == 0){
+                    Treasury::insert([
+                        'id_shipping'=>$id_origin,
+                        'a_10'=>$qt_10,
+                        'b_20'=>$qt_20,
+                        'c_50'=>$qt_50,
+                        'd_100'=>$qt_100,
+                        'balance'=>$value_total,
+                        'status'=> 'Y'
+                    ])->execute();
+                }else{
+                    $v_10 = $treaury[0]['a_10'] + $qt_10;
+                    $v_20 = $treaury[0]['b_20'] + $qt_20;
+                    $v_50 = $treaury[0]['c_50'] + $qt_50;
+                    $v_100 = $treaury[0]['d_100'] + $qt_100;
+                    $balance = $treaury[0]['balance'] + $value_total;
+                    Treasury::update()->set('a_10', $v_10)
+                    ->set('b_20', $v_20)->et('c_50', $v_50)
+                    ->set('d_100', $v_100)->where('id_shipping', $id_origin)->execute();
+                }   
+            }else{
+                $treaury = Treasury::select()->where('id_shipping', $id_destiny)->execute();
+                if(count($treaury) == 0){
+                    Treasury::insert([
+                        'id_shipping'=>$id_origin,
+                        'a_10'=>$qt_10,
+                        'b_20'=>$qt_20,
+                        'c_50'=>$qt_50,
+                        'd_100'=>$qt_100,
+                        'balance'=>$value_total,
+                        'status'=> 'Y'
+                    ])->execute();
+                }else{
+                    $v_10 = $treaury[0]['a_10'] + $qt_10;
+                    $v_20 = $treaury[0]['b_20'] + $qt_20;
+                    $v_50 = $treaury[0]['c_50'] + $qt_50;
+                    $v_100 = $treaury[0]['d_100'] + $qt_100;
+                    $balance = $treaury[0]['balance'] + $value_total;
+                    Treasury::update()->set('a_10', $v_10)
+                    ->set('b_20', $v_20)->et('c_50', $v_50)
+                    ->set('d_100', $v_100)->where('id_shipping', $id_origin)->execute();
+                } 
+            }    
+                
+            $this->redirect('/request', ['success'=>'Adicionado o Pedido.']);
+        }
+        $this->redirect('/request/add', ['error'=>'Houve algum erro na inclusão, favor tentar novamente']);
     }
 
 }

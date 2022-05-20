@@ -83,8 +83,8 @@
         </div>
     </div>
     <div>
-        <a href="#" onclick="saveAndConitnueRequest()">[SALVAR E CONTINUAR]</a>
-        <input type="submit" value="SALVAR E FINALIZAR" />
+        <input type="submit" value="Adicionar" />
     </div>
 </form>
+
 <?php $render('footer'); ?>
