@@ -23,6 +23,50 @@ class AtmController extends Controller {
         ]);
     }
 
+    public function add(){
+        $shippings = Shipping::select()->where('active', 'Y')->execute();
+        if(count($shippings) == 0){
+            $shippings = null;
+        }
+        $this->render('/atm/atm_add', [
+             'title_page' => 'Adicionar Atm',
+             'shippings' => $shippings
+        ]);
+    }
+
+    public function addAction(){
+        print_r($_POST);die();
+        $id_atm = filter_input(INPUT_POST, 'id_atm');
+        $name_atm = filter_input(INPUT_POST, 'name_atm');
+        $shortened_atm = filter_input(INPUT_POST, 'shortened_atm');
+        $id_treasury = filter_input(INPUT_POST, 'id_treasury');
+        $cass_A = filter_input(INPUT_POST, 'cass_A');
+        $cass_B = filter_input(INPUT_POST, 'cass_B');
+        $cass_C = filter_input(INPUT_POST, 'cass_C');
+        $cass_D = filter_input(INPUT_POST, 'cass_D');
+
+        $atm = Atm::select()->where('id_atm', $id_atm)->execute();
+        if(count($atm) > 0){
+            $this->redirect('/atm/add', ['error'=>'ID já cadastrado.']);
+        }
+        $atm = Atm::select()->where('shortened_name_atm', $shortened_atm)->execute();
+        if(count($atm) > 0){
+            $this->redirect('/atm/add', ['error'=>'NOME REDUZIDO já cadastrado.']);
+        }
+        Atm::insert([
+            'id_atm' => $id_atm,
+            'id_treasury' => $id_treasury,
+            'name_atm' => $name_atm,
+            'shortened_name_atm' => $shortened_atm,
+            'cass_A' => $cass_A,
+            'cass_B' => $cass_B,
+            'cass_C' => $cass_C,
+            'cass_D' => $cass_D,
+        ])->execute();
+
+        $this->redirect('/atm', ['error'=>'ATM adicionado.']);
+    }
+
     public function edit($args){
         if(!isset($args)){
             $this->redirect('/atm', ['error'=>'Precisamos de um ID para continuar.']);

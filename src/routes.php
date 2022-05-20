@@ -37,6 +37,8 @@ $router->get('/batch', 'BatchController@index');
 
 // ROTAS DE ATM
 $router->get('/atm', 'AtmController@index');
+$router->get('/atm/add', 'AtmController@add');
+$router->post('/atm/add', 'AtmController@addAction');
 $router->get('/atm/edit/{id}', 'AtmController@edit');
 $router->post('/atm/edit/{id}', 'AtmController@editAction');
 $router->get('/atm/enable/{id}', 'AtmController@enable');
