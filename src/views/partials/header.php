@@ -18,6 +18,7 @@
             <li><a href="<?php echo $base; ?>/treasury">SALDOS</a></li>
             <li><a href="<?php echo $base; ?>/request">PEDIDOS</a></li>
             <li><a href="<?php echo $base; ?>/atm">ATMS</a></li>
+            <li><a href="<?php echo $base; ?>/config">CONFIGURAÇÕES</a></li>
         </ul>
     </div>
 

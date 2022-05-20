@@ -54,25 +54,25 @@
             <label>R$ 10,00</label>
             <input type="number" onchange="generateValue(this)" attr-value="10" name="qt_10" id="qt_10" placeholder="0" />
             <label>R$</label>
-            <input type="text" readonly name="qt_10_text" id="qt_10_text" placeholder="0,00" /> 
+            <input type="text" class="input_text" readonly name="qt_text_10" id="qt_text_10" placeholder="0,00" /> 
         </div>
          <div>
             <label>R$ 20,00</label>
             <input type="number" onchange="generateValue(this)" attr-value="20" name="qt_20" id="qt_20" placeholder="0" />
             <label>R$</label>
-            <input type="text" readonly name="qt_20_text" id="qt_20_text" placeholder="0,00" /> 
+            <input type="text" class="input_text" readonly name="qt_text_20" id="qt_text_20" placeholder="0,00" /> 
         </div>
          <div>
             <label>R$ 50,00</label>
             <input type="number" onchange="generateValue(this)" attr-value="50" name="qt_50" id="qt_50" placeholder="0" />
             <label>R$</label>
-            <input type="text" readonly name="qt_50_text" id="qt_50_text" placeholder="0,00" /> 
+            <input type="text" class="input_text" readonly name="qt_text_50" id="qt_text_50" placeholder="0,00" /> 
         </div>
          <div>
             <label>R$ 100,00</label>
             <input type="number" onchange="generateValue(this)" attr-value="100" name="qt_100" id="qt_100" placeholder="0" />
             <label>R$</label>
-            <input type="text" readonly name="qt_100_text" id="qt_100_text" placeholder="0,00" /> 
+            <input type="text" class="input_text" readonly name="qt_text_100" id="qt_text_100" placeholder="0,00" /> 
         </div>
         <div>
             <label>VALOR TOTAL</label>
