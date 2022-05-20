@@ -22,13 +22,24 @@ function toUpdateValueTotal() {
   })
 }
 
-function saveAndConitnueRequest() {
-  console.log("Faltando implementar a funçao");
-  alert("Faltando implementar a funçao");
-}
-
 function getMoney(str) {
   return str
     .replace(/[^\d,]+/g, '') // Remove caracteres desnecessários.
     .replace(',', '.');      // Troca o separador decimal (`,` -> `.`)
+}
+
+function getShippingById(element){
+  let value_input = element.value
+  let attr = element.getAttribute('attr-value')
+  $('#id_'+attr).find('option').each(function(){
+    let vl = $(this).val()
+    if(vl == value_input){
+      $(this).attr("selected", true);
+    }
+  })
+}
+
+function saveAndConitnueRequest() {
+  console.log("Faltando implementar a funçao");
+  alert("Faltando implementar a funçao");
 }
