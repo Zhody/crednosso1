@@ -45,5 +45,8 @@ $router->get('/atm/enable/{id}', 'AtmController@enable');
 $router->get('/atm/disable/{id}', 'AtmController@disable');
 
 //FIM DAS ROTAS DE ATM
+
+// ROTAS DE PEDIDOS
+$router->get('/request', 'RequestController@index');
 $router->get('/supplies', 'SuppliesController@index');
 //$router->get('/sobre/{nome}', 'HomeController@sobreP');
