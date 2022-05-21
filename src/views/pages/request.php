@@ -26,7 +26,7 @@
                     <td><?php echo $request['date_request']; ?></td>
                     <td><?php echo $request['value_total']; ?></td>
                     <td><?php echo $request['confirmed_value']; ?></td>
-                    <td><?php echo $request['status']; ?></td>
+                    <td><?php echo $request['name_status']; ?></td>
                     <td>
                         <a href="<?php echo $base; ?>/request/view/<?php echo $request['id']; ?>">[VISUALIZAR]</a>
                     </td>

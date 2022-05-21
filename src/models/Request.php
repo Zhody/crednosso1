@@ -9,6 +9,10 @@ class Request extends Model {
         foreach($arrayValues as $key => $value){
             $value_total = $value_total + ($value * $key);
         }
-        return number_format($value_total, 2);
+        return $value_total;
+    }
+
+    public static function generateValue($operator, $arrayValues){
+
     }
 }

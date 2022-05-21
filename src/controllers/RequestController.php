@@ -6,6 +6,7 @@ use \src\models\Batch;
 use \src\models\Treasury;
 use \src\models\Request;
 use \src\models\Shipping;
+use \src\models\Request_status as RequestStatus;
 use \src\models\Order_type as OrderType;
 use \src\models\Operation_type as OperationType;
 
@@ -21,9 +22,11 @@ class RequestController extends Controller {
             $batch = Batch::select()->where('id', $request['id_batch'])->execute();
             $shOrigin = Shipping::select()->where('id_shipping', $request['id_origin'])->execute();
             $shDestiny = Shipping::select()->where('id_shipping', $request['id_destiny'])->execute();
+            $status = RequestStatus::select()->where('id', $request['id_status'])->execute();
             $requests[$key]['batch'] = $batch[0]['batch'];
             $requests[$key]['name_origin'] = $shOrigin[0]['name_shipping'];
             $requests[$key]['name_destiny'] = (isset($shDestiny[0]['name_shipping'])) ? $shDestiny[0]['name_shipping'] : null;
+            $requests[$key]['name_status'] = $status[0]['name'];
         }
         
         $this->render('request' , [
@@ -50,12 +53,12 @@ class RequestController extends Controller {
             'title_page' => 'Adicionar pedido',
             'operation_types' => $operationTypes,
             'shippings' => $shippings,
-            'order_types' => $order_types
+            'order_types' => $order_types,  
         ]);
     } 
 
     public function addAction(){
-       // print_r($_POST);die();
+        
         $operation_type = filter_input(INPUT_POST, 'operation_type');
         $id_origin = filter_input(INPUT_POST, 'id_origin');
         $id_destiny = filter_input(INPUT_POST, 'id_destiny');
@@ -67,19 +70,19 @@ class RequestController extends Controller {
         $qt_50 = filter_input(INPUT_POST, 'qt_50');
         $qt_100 = filter_input(INPUT_POST, 'qt_100');
 
-        
-        die();
         if($operation_type && $id_origin && $date_request && $order_request 
          && $qt_10 && $qt_20 && $qt_50 && $qt_100)
         {
+            
             $arrayValues = [
                 '10' => ($qt_10) ? $qt_10 : 0,
                 '20' =>  ($qt_20) ? $qt_20 : 0,
                 '50' => ($qt_50) ? $qt_50 : 0,
                 '100' => ($qt_100) ? $qt_100 : 0
             ];
-            $batch = Batch::select()->where('date_batch', $date_request)->execute();
             $value_total = Request::gerateValueTotal($arrayValues);
+        
+            $batch = Batch::select()->where('date_batch', $date_request)->execute();    
             if(count($batch) == 0){
                 $batchGerate = Batch::generateBatch($id_origin, $id_destiny);
                 Batch::insert([
@@ -91,7 +94,7 @@ class RequestController extends Controller {
 
                 $batch = Batch::select()->where('batch', $batchGerate)->execute();
             }
-
+            
             Request::insert([
                 'id_batch' => $batch[0]['id'],
                 'id_operation_type' => $operation_type,
@@ -111,9 +114,9 @@ class RequestController extends Controller {
                 'change_in_confirmation' => 'N'
             ])->execute();
             
-            if($id_destiny == 'null'){
-                $treaury = Treasury::select()->where('id_shipping', $id_origin)->execute();
-                if(count($treaury) == 0){
+            if($id_destiny == 0){
+                $treasury = Treasury::select()->where('id_shipping', $id_origin)->execute();
+                if(count($treasury) == 0){
                     Treasury::insert([
                         'id_shipping'=>$id_origin,
                         'a_10'=>$qt_10,
@@ -124,20 +127,24 @@ class RequestController extends Controller {
                         'status'=> 'Y'
                     ])->execute();
                 }else{
-                    $v_10 = $treaury[0]['a_10'] + $qt_10;
-                    $v_20 = $treaury[0]['b_20'] + $qt_20;
-                    $v_50 = $treaury[0]['c_50'] + $qt_50;
-                    $v_100 = $treaury[0]['d_100'] + $qt_100;
-                    $balance = $treaury[0]['balance'] + $value_total;
+                    $v_10 = $treasury[0]['a_10'] + $qt_10;
+                    $v_20 = $treasury[0]['b_20'] + $qt_20;
+                    $v_50 = $treasury[0]['c_50'] + $qt_50;
+                    $v_100 = $treasury[0]['d_100'] + $qt_100;
+                    $balance = $treasury[0]['balance'] + $value_total;
                     Treasury::update()->set('a_10', $v_10)
-                    ->set('b_20', $v_20)->et('c_50', $v_50)
-                    ->set('d_100', $v_100)->where('id_shipping', $id_origin)->execute();
+                    ->set('b_20', $v_20)->set('c_50', $v_50)
+                    ->set('d_100', $v_100)->set('balance', $value_total)
+                    ->where('id_shipping', $id_origin)->execute();
                 }   
             }else{
-                $treaury = Treasury::select()->where('id_shipping', $id_destiny)->execute();
-                if(count($treaury) == 0){
+        
+                $treasuryDestiny = Treasury::select()->where('id_shipping', $id_destiny)->execute();
+                $treasuryOrigin = Treasury::select()->where('id_shipping', $id_origin)->execute();
+                if(count($treasuryDestiny) == 0){
+       
                     Treasury::insert([
-                        'id_shipping'=>$id_origin,
+                        'id_shipping'=>$id_destiny,
                         'a_10'=>$qt_10,
                         'b_20'=>$qt_20,
                         'c_50'=>$qt_50,
@@ -145,19 +152,38 @@ class RequestController extends Controller {
                         'balance'=>$value_total,
                         'status'=> 'Y'
                     ])->execute();
+                    $v_10_origin = $treasuryOrigin[0]['a_10'] - $qt_10;
+                    $v_20_origin = $treasuryOrigin[0]['b_20'] - $qt_20;
+                    $v_50_origin = $treasuryOrigin[0]['c_50'] - $qt_50;
+                    $v_100_origin = $treasuryOrigin[0]['d_100'] - $qt_100;
+
+                    Treasury::update()->set('a_10', $v_10_origin)
+                    ->set('b_20', $v_20_origin)->set('c_50', $v_50_origin)
+                    ->set('c_100', $v_100_origin)->where('id_shipping', $id_origin)->execute();
                 }else{
-                    $v_10 = $treaury[0]['a_10'] + $qt_10;
-                    $v_20 = $treaury[0]['b_20'] + $qt_20;
-                    $v_50 = $treaury[0]['c_50'] + $qt_50;
-                    $v_100 = $treaury[0]['d_100'] + $qt_100;
-                    $balance = $treaury[0]['balance'] + $value_total;
+                    $v_10 = $treasuryDestiny[0]['a_10'] + $qt_10;
+                    $v_20 = $treasuryDestiny[0]['b_20'] + $qt_20;
+                    $v_50 = $treasuryDestiny[0]['c_50'] + $qt_50;
+                    $v_100 = $treasuryDestiny[0]['d_100'] + $qt_100;
+                    $balance = $treasuryDestiny[0]['balance'] + $value_total;
+
+                    $v_10_sub = $treasuryOrigin[0]['a_10'] - $qt_10;
+                    $v_20_sub = $treasuryOrigin[0]['b_20'] - $qt_20;
+                    $v_50_sub = $treasuryOrigin[0]['c_50'] - $qt_50;
+                    $v_100_sub = $treasuryOrigin[0]['d_100'] - $qt_100;
+                    $balance_sub = $treasuryOrigin[0]['balance'] - $value_total;
                     Treasury::update()->set('a_10', $v_10)
-                    ->set('b_20', $v_20)->et('c_50', $v_50)
-                    ->set('d_100', $v_100)->where('id_shipping', $id_origin)->execute();
+                    ->set('b_20', $v_20)->set('c_50', $v_50)
+                    ->set('d_100', $v_100)->set('balance', $balance)
+                    ->where('id_shipping', $id_destiny)->execute();
+                    Treasury::update()->set('a_10', $v_10_sub)
+                    ->set('b_20', $v_20_sub)->set('c_50', $v_50_sub)
+                    ->set('d_100', $v_100_sub)->set('balance', $balance_sub)
+                    ->where('id_shipping', $id_origin)->execute();
                 } 
             }    
                 
-            $this->redirect('/request', ['success'=>'Adicionado o Pedido.']);
+            $this->redirect('/request/add', ['success'=>'Adicionado o Pedido.']);
         }
         $this->redirect('/request/add', ['error'=>'Houve algum erro na inclusão, favor tentar novamente']);
     }

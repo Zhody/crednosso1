@@ -25,7 +25,7 @@
         <div>
             <input type="number"  id="input_id_destiny" attr-value="destiny" onchange="getShippingById(this)" />
             <select name="id_destiny" id="id_destiny" class="element" >
-                <option value="null"></option>
+                <option value="0"></option>
                 <?php foreach($shippings as $shipping): ?>
                     <option value="<?php echo $shipping['id_shipping']; ?>"><?php echo $shipping['name_shipping']; ?></option>
                 <?php endforeach; ?>
@@ -86,5 +86,4 @@
         <input type="submit" value="Adicionar" />
     </div>
 </form>
-
-<?php $render('footer'); ?>
+<?php $render('footer'); ?> 
