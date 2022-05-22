@@ -1,5 +1,8 @@
 <?php $render('header');  ?>
 <h1><?php echo $title_page; ?></h1>
+<div>
+    <a href="<?php echo $base; ?>/request/view">[TELA DE PESQUISA]</a>
+</div>
 <form method="POST" action="<?php echo $base; ?>/request/add">
     <div>
         <label>TIPO DE OPERAÇÃO</label>

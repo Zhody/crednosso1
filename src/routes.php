@@ -50,6 +50,9 @@ $router->get('/atm/disable/{id}', 'AtmController@disable');
 $router->get('/request', 'RequestController@index');
 $router->get('/request/add', 'RequestController@add');
 $router->post('/request/add', 'RequestController@addAction');
+$router->get('/request/view', 'RequestController@view');
+$router->post('/request/view', 'RequestController@viewAction');
+$router->post('/request/search', 'RequestController@searchAction');
 // FIM DAS ROTAS DE PEDIDO
 $router->get('/supplies', 'SuppliesController@index');
 //$router->get('/sobre/{nome}', 'HomeController@sobreP');

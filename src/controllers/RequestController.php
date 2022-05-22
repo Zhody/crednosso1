@@ -114,7 +114,7 @@ class RequestController extends Controller {
                 'change_in_confirmation' => 'N'
             ])->execute();
             
-            if($id_destiny == 0){
+           /* if($id_destiny == 0){
                 $treasury = Treasury::select()->where('id_shipping', $id_origin)->execute();
                 if(count($treasury) == 0){
                     Treasury::insert([
@@ -181,11 +181,144 @@ class RequestController extends Controller {
                     ->set('d_100', $v_100_sub)->set('balance', $balance_sub)
                     ->where('id_shipping', $id_origin)->execute();
                 } 
-            }    
+            }*/    
                 
             $this->redirect('/request/add', ['success'=>'Adicionado o Pedido.']);
         }
         $this->redirect('/request/add', ['error'=>'Houve algum erro na inclusão, favor tentar novamente']);
+    }
+
+    public function view(){
+        $this->render('/request/request_view', [
+            'title_page' => 'Pesquisa pedidos'
+        ]);
+    }
+
+    public function viewAction(){
+       // print_r($_POST);die();
+        $date_initial = filter_input(INPUT_POST, 'date_initial');
+        $date_final = filter_input(INPUT_POST, 'date_final');
+
+        if($date_final == ''){
+            $requests = Request::select()->where('date_request', $date_initial)->execute();
+            if(count($requests) == 0){
+                $requests = null;
+            }
+        }else{
+            $requests = Request::select()
+            ->where('date_request', '>=', $date_initial)
+            ->where('date_request', '<=', $date_final)->execute();
+            if(count($requests) == 0){
+                $requests = null;
+            }
+        }
+        $this->render('/request/request_view', [
+            'title_page' => 'Pesquisa pedidos',
+            'requests' => $requests,
+            'date_initial' => $date_initial,
+            'date_final' => $date_final,
+        ]);
+    }
+
+    public function searchAction(){
+       // print_r($_POST);die();
+        $elements_checked = filter_input(INPUT_POST, 'checados');
+        $date_initial = filter_input(INPUT_POST, 'date_initial');
+        $date_final = filter_input(INPUT_POST, 'date_final');
+        if($elements_checked !== ""){
+            $elements_checked = explode(',', $elements_checked);
+            foreach($elements_checked as  $check){
+                $request = Request::select()->where("id", $check)->execute();
+                if($request[0]['id_destiny'] == 0){
+                    $treasury = Treasury::select()->where("id_shipping", $request[0]['id_origin'])->execute();
+                    if(count($treasury) > 0){
+                        $valueTreasury = [
+                            '10' => $treasury[0]['a_10'],
+                            '20' => $treasury[0]['b_20'],
+                            '50' => $treasury[0]['c_50'],
+                            '100' => $treasury[0]['d_100'],
+                        ];
+                        $valueRequest = [
+                            '10' => $request[0]['qt_10'],
+                            '20' => $request[0]['qt_20'],
+                            '50' => $request[0]['qt_50'],
+                            '100' => $request[0]['qt_100'],
+                        ];
+                        $valueFinal = Request::generateValueForCassete('adc', $valueTreasury, $valueRequest);
+                        $balance = Request::gerateValueTotal($valueFinal);
+                        Treasury::update()->set("a_10", $valueFinal['10'])
+                        ->set("b_20", $valueFinal['20'])->set("c_50", $valueFinal['50'])
+                        ->set("d_100", $valueFinal['100'])->set("balance", $balance)
+                        ->where('id_shipping', $request[0]['id_origin'])->execute();
+                    }
+                }else{
+                    $treasuryDestiny = Treasury::select()->where("id_shipping", $request[0]['id_destiny'])->execute();
+                    $treasuryOrigin = Treasury::select()->where("id_shipping", $request[0]['id_origin'])->execute();
+                    
+                    if(count($treasuryDestiny) == 0){
+                        Treasury::insert([
+                            "id_shipping"=>$request[0]['id_destiny']
+                        ])->execute();
+                    }
+                    $treasuryDestiny = Treasury::select()->where("id_shipping", $request[0]['id_destiny'])->execute();
+                    $valueTreasury = [
+                            '10' => $treasuryDestiny[0]['a_10'],
+                            '20' => $treasuryDestiny[0]['b_20'],
+                            '50' => $treasuryDestiny[0]['c_50'],
+                            '100' => $treasuryDestiny[0]['d_100'],
+                    ];
+                    $valueRequest = [
+                            '10' => $request[0]['qt_10'],
+                            '20' => $request[0]['qt_20'],
+                            '50' => $request[0]['qt_50'],
+                            '100' => $request[0]['qt_100'],
+                    ];
+                    $valueFinal = Request::generateValueForCassete('adc', $valueTreasury, $valueRequest);
+                    $balance = Request::gerateValueTotal($valueFinal);
+                    Treasury::update()->set("a_10", $valueFinal['10'])
+                    ->set("b_20", $valueFinal['20'])->set("c_50", $valueFinal['50'])
+                    ->set("d_100", $valueFinal['100'])->set("balance", $balance)
+                    ->where("id_shipping", $request[0]['id_destiny'])->execute();
+
+                    $valueOrigin = [
+                            '10' => $treasuryOrigin[0]['a_10'],
+                            '20' => $treasuryOrigin[0]['b_20'],
+                            '50' => $treasuryOrigin[0]['c_50'],
+                            '100' => $treasuryOrigin[0]['d_100'],
+                    ];
+
+                    $valueFinal = Request::generateValueForCassete('sub', $valueOrigin, $valueRequest);
+                    $balance = Request::gerateValueTotal($valueFinal);
+                    Treasury::update()->set("a_10", $valueFinal['10'])
+                    ->set("b_20", $valueFinal['20'])->set("c_50", $valueFinal['50'])
+                    ->set("d_100", $valueFinal['100'])->set("balance", $balance)
+                    ->where("id_shipping", $request[0]['id_origin'])->execute();
+                }
+                Request::update()->set('id_status', 2)
+                ->set('confirmed_value', $request[0]['value_total'])->where("id", $check)->execute();
+            }
+        }
+        if($date_final == ''){
+            $requests = Request::select()->where('date_request', $date_initial)->execute();
+            if(count($requests) == 0){
+                $requests = null;
+            }
+        }else{
+            $requests = Request::select()
+            ->where('date_request', '>=', $date_initial)
+            ->where('date_request', '<=', $date_final)->execute();
+            if(count($requests) == 0){
+                $requests = null;
+            }
+        }
+
+       // echo "Acabou";
+         $this->render('/request/request_view', [
+            'title_page' => 'Pesquisa pedidos',
+            'requests' => $requests,
+            'date_initial' => $date_initial,
+            'date_final' => $date_final,
+         ]);
     }
 
 }

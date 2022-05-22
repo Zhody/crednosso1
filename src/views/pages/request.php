@@ -23,8 +23,8 @@
                     <td><?php echo $request['batch']; ?></td>
                     <td><?php echo $request['name_origin']; ?></td>
                     <td><?php echo $request['name_destiny']; ?></td>
-                    <td><?php echo $request['date_request']; ?></td>
-                    <td><?php echo $request['value_total']; ?></td>
+                    <td><?php echo date('d/m/Y', strtotime($request['date_request'])); ?></td>
+                    <td><?php echo 'R$ '.number_format($request['value_total'], 2, ',', '.'); ?></td>
                     <td><?php echo $request['confirmed_value']; ?></td>
                     <td><?php echo $request['name_status']; ?></td>
                     <td>

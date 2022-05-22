@@ -12,7 +12,20 @@ class Request extends Model {
         return $value_total;
     }
 
-    public static function generateValue($operator, $arrayValues){
-
+    public static function generateValueForCassete($operator, $valuesTreasury, $valuesRequest){
+        $return = [];
+        switch($operator){
+            case 'adc':
+                foreach($valuesTreasury as $key => $value){
+                    $return[$key] = $value +  $valuesRequest[$key]; 
+                }       
+            break;
+            case 'sub':
+                foreach($valuesTreasury as $key => $value){
+                    $return[$key] = $value -  $valuesRequest[$key]; 
+                }
+            break;
+        }
+        return $return;
     }
 }
