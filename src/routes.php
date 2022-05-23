@@ -53,6 +53,7 @@ $router->post('/request/add', 'RequestController@addAction');
 $router->get('/request/view', 'RequestController@view');
 $router->post('/request/view', 'RequestController@viewAction');
 $router->post('/request/search', 'RequestController@searchAction');
+$router->post('/request/search/partial', 'RequestController@partialAction');
 // FIM DAS ROTAS DE PEDIDO
 $router->get('/supplies', 'SuppliesController@index');
 //$router->get('/sobre/{nome}', 'HomeController@sobreP');

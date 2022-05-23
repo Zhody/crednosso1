@@ -15,7 +15,9 @@
 </form>
 <div>
     <button  onclick="functionConfirmChek('<?php echo $base; ?>')" >CONFIRMAR TOTAL</button>
+    <button  onclick="openModalConfirmParcial('<?php echo $base; ?>')" >CONFIRMAR PARCIAL</button>
 </div>
+<div id="msg"></div>
 <?php if(isset($requests) && $requests !== null): ?>
     <table width="100%" border="1">
         <thead>
@@ -64,4 +66,48 @@
 <?php else: ?>
     <p>Nada a mostrar.</p>
 <?php endif; ?>
+<!--style="display:none;"-->
+<div id="modal" class="modal" >
+    <div>
+        <a title="Fechar" class="fechar" onclick="closeModal()">x</a>
+        <h3>CONFIRMAÇÃO PARCIAL</h3>
+        <div>
+            <label>R$ 10,00</label>
+            <input type="number"
+                attr-value="10"
+                onchange="generateValueInModal(this)"
+                id="modal_10"
+                name="modal_10"
+                class="input_"
+                placeholder="0" />
+            <label>R$ </label>
+            <input type="text" readonly id="modal_text_10" name="modal_text_10" class="input_modal_text" placeholder="0" />
+        </div>
+        <div>
+            <label>R$ 20,00</label>
+            <input type="number" attr-value="20" onchange="generateValueInModal(this)" id="modal_20" name="modal_20" class="input_" placeholder="0" />
+            <label>R$ </label>
+            <input type="text" readonly id="modal_text_20" name="modal_text_20" class="input_modal_text" placeholder="0" />
+        </div>
+        <div>
+            <label>R$ 50,00</label>
+            <input type="number" attr-value="50" onchange="generateValueInModal(this)" id="modal_50" name="modal_50" class="input_" placeholder="0" />
+            <label>R$ </label>
+            <input type="text" readonly id="modal_text_50" name="modal_text_50" class="input_modal_text" placeholder="0" />
+        </div>
+        <div>
+            <label>R$ 100,00</label>
+            <input type="number" attr-value="100" onchange="generateValueInModal(this)" id="modal_100" name="modal_100" class="input_" placeholder="0" />
+            <label>R$ </label>
+            <input type="text" readonly id="modal_text_100" name="modal_text_100" class="input_modal_text" placeholder="0" />
+        </div>
+        <div>
+            <label>R$</label>
+            <input type="text" readonly id="value_total_modal" name="value_total" />
+        </div>
+        <div>
+            <button onclick="functionConfirmPartial('<?php echo $base; ?>')" >SALVAR</button>
+        </div>
+    </div>
+</div>
 <?php $render('footer'); ?>

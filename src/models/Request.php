@@ -28,4 +28,13 @@ class Request extends Model {
         }
         return $return;
     }
+
+    public static function generateValuesPartials($values){
+        $arrayAux = ['10', '20', '50', '100'];
+        foreach($values as $key => $value){
+            $v = explode('=', $value);
+            $arrayReturn[$arrayAux[$key]] = $v[1];
+        }
+        return $arrayReturn;
+    }
 }
