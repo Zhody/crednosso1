@@ -33,6 +33,7 @@ $router->get('/contestation/enable/{id}', 'ContestationController@enable');
 
 // ROTAS DE LOTE
 $router->get('/batch', 'BatchController@index');
+$router->get('/batch/view/{id}', 'BatchController@view');
 // FIM DAS ROTAS DE LOTE
 
 // ROTAS DE ATM

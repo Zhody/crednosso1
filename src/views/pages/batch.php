@@ -19,7 +19,7 @@
                     <td><?php echo $batch['id_type']; ?></td>
                     <td><?php echo $batch['name_status']; ?></td>
                     <td>
-                        <a>VISUALIZAR</a>
+                        <a href="<?php echo $base; ?>/batch/view/<?php echo $batch['id']; ?>" >VISUALIZAR</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
