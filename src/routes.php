@@ -34,6 +34,7 @@ $router->get('/contestation/enable/{id}', 'ContestationController@enable');
 // ROTAS DE LOTE
 $router->get('/batch', 'BatchController@index');
 $router->get('/batch/view/{id}', 'BatchController@view');
+$router->post('/batch/view/', 'BatchController@viewAction');
 // FIM DAS ROTAS DE LOTE
 
 // ROTAS DE ATM
@@ -51,10 +52,12 @@ $router->get('/atm/disable/{id}', 'AtmController@disable');
 $router->get('/request', 'RequestController@index');
 $router->get('/request/add', 'RequestController@add');
 $router->post('/request/add', 'RequestController@addAction');
-$router->get('/request/view', 'RequestController@view');
-$router->post('/request/view', 'RequestController@viewAction');
+$router->get('/request/search', 'RequestController@search');
 $router->post('/request/search', 'RequestController@searchAction');
+$router->get('/request/view/{id}', 'RequestController@view');
+$router->get('/request/view/edit/{id}', 'RequestController@editAction');
 $router->post('/request/search/partial', 'RequestController@partialAction');
+$router->post('/request/search/ajax', 'RequestController@searchAjaxAction');
 // FIM DAS ROTAS DE PEDIDO
 $router->get('/supplies', 'SuppliesController@index');
 //$router->get('/sobre/{nome}', 'HomeController@sobreP');

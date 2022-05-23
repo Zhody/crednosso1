@@ -72,13 +72,13 @@ function functionConfirmChek(url) {
     };
 
     $.ajax({
-      url: url + "/request/search",
+      url: url + "/request/search/ajax",
       type: "POST",
       data: string,
     })
       .done(function (response) {
         console.log(response);
-        window.location.replace(url + "/request/view");
+        window.location.replace(url + "/request/search");
         $("#date_initial").val(dateInitial);
         $("#date_final").val(dateFinal);
         document.getElementById("pesquisar").click();
@@ -136,7 +136,7 @@ function functionConfirmPartial(url) {
     })
       .done(function (response) {
         console.log(response);
-        window.location.replace(url + "/request/view");
+        window.location.replace(url + "/request/search");
         $("#date_initial").val(dateInitial);
         $("#date_final").val(dateFinal);
         document.getElementById("pesquisar").click();

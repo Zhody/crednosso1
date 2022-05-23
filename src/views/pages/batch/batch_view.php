@@ -1,5 +1,9 @@
 <?php $render('header'); ?>
 <h1><?php echo $title_page; ?></h1>
+<div>
+    <a>CONFIRMAR LOTE</a>
+    <a>EXCLUIR LOTE</a>
+</div>
 <form method="POST" action="<?php echo $base; ?>/batch/view/">
     <div>
         <label>ID</label>
@@ -41,4 +45,36 @@
         <a href="<?php echo $base; ?>/batch">[VOLTAR]</a>
     </div>
 </form>
+<div>
+    <?php if(isset($requests) && $requests !== null): ?>
+        <table width="100%" border="1">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>ORIGEM</td>
+                    <td>DESTINO</td>
+                    <td>STATUS</td>
+                    <td>VALOR TOTAL</td>
+                    <td>VALOR CONFIRM.</td>
+                    <td>VIZUALIZAR</td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($requests as $req): ?>
+                    <tr>
+                        <td><?php echo $req['id']; ?></td>
+                        <td><?php echo $req['name_origin']; ?></td>
+                        <td><?php echo $req['name_destiny']; ?></td>
+                        <td><?php echo $req['name_status']; ?></td>
+                        <td><?php echo 'R$ '.number_format($req['value_total'], 2, ',', '.'); ?></td>
+                        <td><?php echo 'R$ '.number_format($req['confirmed_value'], 2, ',', '.'); ?></td>
+                        <td><a href="<?php echo $base; ?>/request/view/<?php echo $req['id']; ?>" >[CLIQUE AQUI]</a></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>Lote vazio</p>
+    <?php endif; ?>
+</div>
 <?php $render('footer'); ?>

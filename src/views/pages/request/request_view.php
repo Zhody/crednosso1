@@ -1,113 +1,104 @@
 <?php $render('header');  ?>
-<h1><?php echo $title_page; ?></h1>
-<form method="POST" action="<?php echo $base; ?>/request/view" >
-    <div>
-        <label>DATA INICIAL</label>
-        <input type="date" name="date_initial" id="date_initial" value="<?php echo $date_initial; ?>" /> 
-    </div>
-    <div>
-        <label>DATA FINAL</label>
-        <input type="date" name="date_final" id="date_final" value="<?php echo $date_final; ?>" />
-    </div>
-    <div>
-        <input type="submit" value="Pesquisar" id="pesquisar" /> 
-    </div>
-</form>
+<h1><?php echo $title_page; /*print_r($shippings);*/ ?></h1>
 <div>
-    <button  onclick="functionConfirmChek('<?php echo $base; ?>')" >CONFIRMAR TOTAL</button>
-    <button  onclick="openModalConfirmParcial('<?php echo $base; ?>')" >CONFIRMAR PARCIAL</button>
+    <a href="<?php echo $base; ?>/request/search">[TELA DE PESQUISA]</a>
 </div>
-<div id="msg"></div>
-<?php if(isset($requests) && $requests !== null): ?>
-    <table width="100%" border="1">
-        <thead>
-            <tr>
-                <td></td>
-                <td>ID</td>
-                <td>STATUS</td>
-                <td>LOTE</td>
-                <td>ORIGEM</td>
-                <td>DESTINO</td>
-                <td>DATA</td>
-                <td>R$ 10,00</td>
-                <td>R$ 20,00</td>
-                <td>R$ 50,00</td>
-                <td>R$ 100,00</td>
-                <td>TOTAL</td>
-                <td>VALOR CONF.</td>
-                <td>ALTERAÇÃO</td>
-                <td>AÇÕES</td>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($requests as $req): ?>
-                <tr>
-                    <td>
-                        <input type="checkbox" class="setados" name="setados[]" id="setados" value="<?php echo $req['id']; ?>" />
-                    </td>
-                    <td><?php echo $req['id']; ?></td>
-                    <td><?php echo $req['id_status']; ?></td>
-                    <td><?php echo $req['id_batch']; ?></td>
-                    <td><?php echo $req['id_origin']; ?></td>
-                    <td><?php echo $req['id_destiny']; ?></td>
-                    <td><?php echo date('d/m/Y', strtotime($req['date_request'])); ?></td>
-                    <td><?php echo $req['qt_10']; ?></td>
-                    <td><?php echo $req['qt_20']; ?></td>
-                    <td><?php echo $req['qt_50']; ?></td>
-                    <td><?php echo $req['qt_100']; ?></td>
-                    <td><?php echo 'R$ '.number_format($req['value_total'], 2, ',', '.'); ?></td>
-                    <td><?php echo 'R$ '.number_format($req['confirmed_value'], 2, ',', '.'); ?></td>
-                    <td><?php echo $req['change_in_confirmation']; ?></td>
-                    <td>AÇOES</td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-<?php else: ?>
-    <p>Nada a mostrar.</p>
-<?php endif; ?>
-<!--style="display:none;"-->
-<div id="modal" class="modal" >
+<form method="POST" action="<?php echo $base; ?>/request/view/edit/<?php echo $request[0]['id']; ?>">
     <div>
-        <a title="Fechar" class="fechar" onclick="closeModal()">x</a>
-        <h3>CONFIRMAÇÃO PARCIAL</h3>
+        <label>ID</label>
+        <input type="number" readonly name="id_requet" id="id_request" value="<?php echo $request[0]['id']; ?>" />
+    </div>
+    <div>
+        <label>TIPO DE OPERAÇÃO</label>
+        <select name="operation_type" id="operation_type" class="element" >
+            <?php foreach($operation_types as $operation): ?>
+                <option value="<?php echo $operation['id']; ?>"
+                    <?php if($operation['id'] == $request[0]['id_operation_type']){echo 'selected';} ?>
+                ><?php echo $operation['name']; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div>
+        <label>ORIGEM</label>
+        <div>
+            <input type="number"  id="input_id_origin" attr-value="origin" onchange="getShippingById(this)"  value="<?php echo $request[0]['id_origin']; ?>" />
+            <select name="id_origin" id="id_origin" class="element">
+                <?php foreach($shippings as $shipping): ?>
+                    <option value="<?php echo $shipping['id_shipping']; ?>"
+                        <?php if($shipping['id_shipping'] == $request[0]['id_origin']){ echo 'selected';} ?>
+                    ><?php echo $shipping['name_shipping']; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div>
+        <label>DESTINO</label>
+        <div>
+            <input type="number"  id="input_id_destiny" attr-value="destiny" onchange="getShippingById(this)" value="<?php echo $request[0]['id_destiny']; ?>" />
+            <select name="id_destiny" id="id_destiny" class="element" >
+                <option value="0"></option>
+                <?php foreach($shippings as $shipping): ?>
+                    <option value="<?php echo $shipping['id_shipping']; ?>"
+                    <?php if($shipping['id_shipping'] == $request[0]['id_destiny']){ echo 'selected';} ?>
+                    ><?php echo $shipping['name_shipping']; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div>
+        <label>DATA</label>
+        <input type="date" name="date_request" id="date_request" class="element" value="<?php echo $request[0]['date_request']; ?>" />
+    </div>
+    <div>
+        <label>TIPO DE ORDEM</label>
+        <select name="order_request" id="order_request" class="element">
+            <?php foreach($order_types as $order): ?>
+                <option value="<?php echo $order['id']; ?>"
+                    <?php if($order['id'] == $request[0]['id_order_type']){ echo 'selected';} ?>
+                ><?php echo $order['name']; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div>
+        <label>OBSERVAÇÃO</label>
+        <textarea name="note_request" id="note_request"><?php echo $request[0]['note']; ?></textarea>
+    </div>
+    <div>
+        <label>COMPOSIÇÃO PEDIDO</label>
         <div>
             <label>R$ 10,00</label>
-            <input type="number"
-                attr-value="10"
-                onchange="generateValueInModal(this)"
-                id="modal_10"
-                name="modal_10"
-                class="input_"
-                placeholder="0" />
-            <label>R$ </label>
-            <input type="text" readonly id="modal_text_10" name="modal_text_10" class="input_modal_text" placeholder="0" />
-        </div>
-        <div>
-            <label>R$ 20,00</label>
-            <input type="number" attr-value="20" onchange="generateValueInModal(this)" id="modal_20" name="modal_20" class="input_" placeholder="0" />
-            <label>R$ </label>
-            <input type="text" readonly id="modal_text_20" name="modal_text_20" class="input_modal_text" placeholder="0" />
-        </div>
-        <div>
-            <label>R$ 50,00</label>
-            <input type="number" attr-value="50" onchange="generateValueInModal(this)" id="modal_50" name="modal_50" class="input_" placeholder="0" />
-            <label>R$ </label>
-            <input type="text" readonly id="modal_text_50" name="modal_text_50" class="input_modal_text" placeholder="0" />
-        </div>
-        <div>
-            <label>R$ 100,00</label>
-            <input type="number" attr-value="100" onchange="generateValueInModal(this)" id="modal_100" name="modal_100" class="input_" placeholder="0" />
-            <label>R$ </label>
-            <input type="text" readonly id="modal_text_100" name="modal_text_100" class="input_modal_text" placeholder="0" />
-        </div>
-        <div>
+            <input type="number" class="element" onchange="generateValue(this)" attr-value="10" name="qt_10" id="qt_10" placeholder="0" value="<?php echo $request[0]['qt_10']; ?>" />
             <label>R$</label>
-            <input type="text" readonly id="value_total_modal" name="value_total" />
+            <input type="text" class="input_text" readonly name="qt_text_10" id="qt_text_10" placeholder="0,00" /> 
+        </div>
+         <div>
+            <label>R$ 20,00</label>
+            <input type="number" class="element" onchange="generateValue(this)" attr-value="20" name="qt_20" id="qt_20" placeholder="0" value="<?php echo $request[0]['qt_20']; ?>" />
+            <label>R$</label>
+            <input type="text" class="input_text" readonly name="qt_text_20" id="qt_text_20" placeholder="0,00" /> 
+        </div>
+         <div>
+            <label>R$ 50,00</label>
+            <input type="number" class="element" onchange="generateValue(this)" attr-value="50" name="qt_50" id="qt_50" placeholder="0" value="<?php echo $request[0]['qt_50']; ?>" />
+            <label>R$</label>
+            <input type="text" class="input_text" readonly name="qt_text_50" id="qt_text_50" placeholder="0,00" /> 
+        </div>
+         <div>
+            <label>R$ 100,00</label>
+            <input type="number" class="element" onchange="generateValue(this)" attr-value="100" name="qt_100" id="qt_100" placeholder="0" value="<?php echo $request[0]['qt_100']; ?>" />
+            <label>R$</label>
+            <input type="text" class="input_text" readonly name="qt_text_100" id="qt_text_100" placeholder="0,00" /> 
         </div>
         <div>
-            <button onclick="functionConfirmPartial('<?php echo $base; ?>')" >SALVAR</button>
+            <label>VALOR TOTAL</label>
+            <div>
+                <label>R$</label>
+                <input type="text" readonly name="value_total" id="value_total" />
+            </div>
         </div>
     </div>
-</div>
-<?php $render('footer'); ?>
+    <div>
+        <input type="submit" value="Alterar" />
+    </div>
+</form>
+<?php $render('footer');  ?>

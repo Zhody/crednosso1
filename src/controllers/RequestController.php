@@ -188,13 +188,13 @@ class RequestController extends Controller {
         $this->redirect('/request/add', ['error'=>'Houve algum erro na inclusão, favor tentar novamente']);
     }
 
-    public function view(){
-        $this->render('/request/request_view', [
+    public function search(){
+        $this->render('/request/request_search', [
             'title_page' => 'Pesquisa pedidos'
         ]);
     }
 
-    public function viewAction(){
+    public function searchAction(){
        // print_r($_POST);die();
         $date_initial = filter_input(INPUT_POST, 'date_initial');
         $date_final = filter_input(INPUT_POST, 'date_final');
@@ -212,7 +212,7 @@ class RequestController extends Controller {
                 $requests = null;
             }
         }
-        $this->render('/request/request_view', [
+        $this->render('/request/request_search', [
             'title_page' => 'Pesquisa pedidos',
             'requests' => $requests,
             'date_initial' => $date_initial,
@@ -220,7 +220,7 @@ class RequestController extends Controller {
         ]);
     }
 
-    public function searchAction(){
+    public function searchAjaxAction(){
        // print_r($_POST);die();
         $elements_checked = filter_input(INPUT_POST, 'checados');
         $date_initial = filter_input(INPUT_POST, 'date_initial');
@@ -424,6 +424,42 @@ class RequestController extends Controller {
             'date_initial' => $date_initial,
             'date_final' => $date_final,
          ]);
+    }
+
+    public function view($args){
+        if(!isset($args['id']) && $args['id'] == null){
+            $this->render('/request',['error'=>'Precisamos de um ID para continuar']);
+        }
+        $request = Request::select()->where('id', $args['id'])->execute();
+        if(count($request) == 0){
+            $request = null;
+        }else{
+            $operationTypes = OperationType::select()->where('active', 'Y')->execute();
+            if(count($operationTypes) == 0){
+                $operationTypes = null;
+            }
+            $shippings = Shipping::select()->where('active', 'Y')->execute();
+            if(count($shippings) == 0){
+                $shippings = 0;
+            }
+
+            $orderTypes = OrderType::select()->where('active', 'Y')->execute();
+            if(count($orderTypes) == 0){
+                $order_types = null;
+            }
+        }
+
+        $this->render('/request/request_view', [
+            'title_page'=>'Vizualização Pedido',
+            'request' => $request,
+            'operation_types' => $operationTypes,
+            'shippings' => $shippings,
+            'order_types' => $orderTypes
+        ]);
+    }
+
+    public function editAction($args){
+        
     }
 
 }

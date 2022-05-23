@@ -3,8 +3,11 @@ namespace src\controllers;
 
 use \core\Controller;
 use \src\models\Batch;
+use \src\models\Request;
+use \src\models\Shipping;
 use \src\models\Batch_type as BatchType;
 use \src\models\Batch_status as BatchStatus;
+use \src\models\Request_status as RequestStatus;
 
 class BatchController extends Controller {
 
@@ -44,12 +47,39 @@ class BatchController extends Controller {
 
             $batch[0]['name_status'] = $batchStatus[0]['name'];
             $batch[0]['name_type'] = $batchType[0]['name'];
+
+            $requests = Request::select()->where('id_batch', $args['id'])->execute();
+            if(count($requests) == 0){
+                $requests = null;
+            }else{
+                foreach($requests as $key => $req){
+                    $shOrigin = Shipping::select()->where('id', $req['id_origin'])->execute();
+                    $shDestiny = Shipping::select()->where('id', $req['id_destiny'])->execute();
+                    $reqStatus = RequestStatus::select()->where('id', $req['id_status'])->execute();
+                    $requests[$key]['name_origin'] = $shOrigin[0]['name_shipping'];
+                    $requests[$key]['name_destiny'] = (count($shDestiny) > 0)?$shDestiny[0]['name_shipping'] : null;
+                    $requests[$key]['name_status'] = $reqStatus[0]['name'];
+                }
+            }
         }
         $this->render('/batch/batch_view', [
             'title_page' => 'Visualização de Lote',
             'batch' => $batch,
-            'all_status' => $allStatus
+            'all_status' => $allStatus,
+            'requests' => $requests
         ]);
+    }
+
+    public function viewAction(){
+        $id_batch = filter_input(INPUT_POST, 'id_batch');
+        $id_status = filter_input(INPUT_POST, 'id_status');
+
+        $batch = Batch::select()->where('id', $id_batch)->execute();
+       
+        /*if($id_status !== $batch[0]['id_status']){
+            // IMPLEMENTAÇÃO SE HOUVER MUDANÇAS
+        }*/
+        print_r($_POST);die();
     }
 
 }
