@@ -1,28 +1,28 @@
 <?php $render('header'); ?>
 <h1><?php echo $title_page;?></h1>
-<form method="POST" action="<?php echo $base; ?>/shipping/add">
+<form class="formAddContest" method="POST" action="<?php echo $base; ?>/shipping/add">
     <div>
-        <label>ID</label>
-        <input type="number" name="id_shipping" id="id_shipping" />
+        <label class="labelTitulos" >ID</label>
+        <input class="form-control" type="number" name="id_shipping" id="id_shipping" />
     </div>
     <div>
-        <label>NOME</label>
-        <input type="text" name="name_shipping" id="name_shipping" />
+        <label class="labelTitulos">NOME</label>
+        <input class="form-control" type="text" name="name_shipping" id="name_shipping" />
     </div>
     <div>
-        <label>E-MAILS</label>
+        <label class="labelTitulos">E-MAILS</label>
         <small>Coloque todos os emails separados por ",".</small>
-        <textarea name="emails_shipping" id="emails_shipping" ></textarea>
+        <textarea class="form-control areaTexto" name="emails_shipping" id="emails_shipping" ></textarea>
     </div>
     <div>
-        <label>STATUS</label>
-        <select name="active_shipping" id="active_shipping">
+        <label class="labelTitulos">STATUS</label>
+        <select class="formSelect" name="active_shipping" id="active_shipping">
             <option value="Y" >ATIVO</option>
             <option value="N" >INATIVO</option>
         </select>
     </div>
-        <input type="submit" value="Adicionar" />
-        <a href="<?php echo $base; ?>/shipping">[VOLTAR]</a>
+        <input class="btn btn-secondary btn-sm btnMain" type="submit" value="Adicionar" />
+        <a class="btn btn-secondary btn-sm btnMain" href="<?php echo $base; ?>/shipping">VOLTAR</a>
     </div>
 </form>
 <?php $render('footer'); ?>

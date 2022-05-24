@@ -2,7 +2,7 @@
 namespace src;
 
 class Config {
-    const BASE_DIR = '/crednosso/public';
+    const BASE_DIR = '/crednosso1/public';
 
     const DB_DRIVER = 'mysql';
     const DB_HOST = 'localhost';

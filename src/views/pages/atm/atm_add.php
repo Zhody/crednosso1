@@ -1,4 +1,5 @@
 <?php $render('header');  ?>
+        <link rel="stylesheet" type="text/css" href="<?php echo $base; ?>/assets/css/styles.css" media="screen"/>
 <h1><?php echo $title_page;  ?></h1>
 <form method="POST" action="<?php echo $base; ?>/atm/add">
     <div>
@@ -6,15 +7,15 @@
         <input type="number" name="id_atm" id="id_atm" />
     </div>
     <div>
-        <label>NOME</label>
-        <input type="text" name="name_atm" id="name_atm" />
+        <label class="titulos"for="name_atm">NOME</label>
+        <input type="text" placeholder="Default input" aria-label="default input example" name="name_atm" id="name_atm" />
     </div>
     <div>
-        <label>NOME REDUZIDO</label>
+        <label for="shortened_atm">NOME REDUZIDO</label>
         <input type="text" name="shortened_atm" id="shortened_atm" />
     </div>
     <div>
-        <label>TRANSPORTADORA</label>
+        <label for="id_treasury">TRANSPORTADORA</label>
         <select name="id_treasury" id="id_treasury">
             <?php foreach($shippings as $shipping): ?>
                 <option value="<?php echo $shipping['id_shipping']; ?>" ><?php echo $shipping['name_shipping']; ?></option>

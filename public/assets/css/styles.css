@@ -1,46 +1,160 @@
-.modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 99999;
-  opacity: 0;
-  -webkit-transition: opacity 400ms ease-in;
-  -moz-transition: opacity 400ms ease-in;
-  transition: opacity 400ms ease-in;
-  pointer-events: none;
+* {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
 }
-
-.modal:target {
-  opacity: 1;
-  pointer-events: auto;
+li a {
+  text-decoration: none;
+  color: white;
 }
-.modal > div {
-  width: 400px;
-  position: relative;
-  margin: 10% auto;
-  padding: 15px 20px;
-  background: #fff;
+html,
+body {
+  font-family: Andale Mono, monospace;
+  font-size: larger;
+  background-color: gainsboro;
 }
-
-.fechar {
+ul {
+  list-style: none;
+}
+img {
+  width: 50px;
+  padding: 0px;
+  margin: 0px;
+}
+input[type="checkbox"] {
+  display: none;
+}
+nav {
+  background-color: rgb(12, 15, 10);
+  width: 15rem;
+  height: 100%;
+  left: -15rem;
   position: absolute;
-  width: 30px;
-  right: -15px;
-  top: -20px;
+  transition: all 0.5s;
+}
+input[type="checkbox"]:checked ~ nav {
+  transform: translateX(15rem);
+}
+ul {
+  padding: 2%;
+  top: 5px;
+  position: absolute;
+  width: 100%;
+}
+li,
+a[class="menuLateral"] {
+  display: block;
+  padding: 0.5rem;
+  width: 100%;
+  color: white;
+  margin: 0px;
+}
+.menuLateral:hover {
+  background-color: rgba(251, 255, 18);
+  border-radius: 5px;
+  width: 100%;
+  color: black;
+}
+label[class="btnPush"] {
+  padding: 15px;
+  position: absolute;
+  z-index: 1;
+}
+h1 {
   text-align: center;
-  line-height: 30px;
-  margin-top: 5px;
-  background: #ff4545;
-  border-radius: 50%;
-  font-size: 16px;
-  color: #8d0000;
-  cursor: pointer;
+  padding-top: 2px;
+  background-color: rgb(12, 15, 10);
+  color: white;
+  padding: 15px;
+  margin: 0px;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  text-align: center;
+  line-height: 100px;
+}
+/*ESTILO BUTTON */
+.btnMain {
+  background-color: rgba(12, 15, 10, 0.9);
+  margin: 0.5%;
+  font-size: 1rem;
+}
+.btnInternal {
+  background-color: rgba(12, 15, 10, 0.9);
+  margin: 1%;
+  font-size: 0.8rem;
+}
+.labelTitulos {
+  padding-left: 0.2rem;
+  min-width: 6.5rem;
+}
+.labelCifra {
+  min-width: 1.5rem;
 }
 
-.input_ {
-  max-width: 100px;
+/*ESTILO TABELA */
+input[type="checkbox"]:checked ~ form[class="formContest"] {
+  transform: translateX(15rem);
+  max-width: 77.6%;
+  transition: 0.5s;
+}
+input[type="checkbox"]:checked ~ div[class="formContest"] {
+  transform: translateX(15rem);
+  max-width: 77.6%;
+  transition: 0.5s;
+}
+
+.formContest {
+  padding-left: 1rem;
+}
+
+thead {
+  background-color: rgba(12, 15, 10, 0.8);
+  color: white;
+}
+thead,
+tr,
+td {
+  padding: 0%;
+  border: 1px solid white;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/*TELA DE ADD CONTESTAÇÕES*/
+input[type="text"]:focus {
+  outline: 0;
+  box-shadow: 5px green;
+}
+.form-control {
+  padding-left: 1rem;
+  width: 20%;
+  margin: 0.2%;
+}
+.formAddContest {
+  padding-left: 1rem;
+}
+input[type="checkbox"]:checked ~ form[class="formAddContest"] {
+  transform: translateX(15rem);
+  max-width: 76.5%;
+  transition: 0.5s;
+}
+.formSelect {
+  padding-left: 0.5rem;
+  padding: 0.2rem;
+  width: 10%;
+  margin: 0.2%;
+  text-align: left;
+  border-radius: 5px;
+}
+.areaTexto {
+  width: 35%;
+}
+.formSaldo {
+  border-radius: 5px;
+  margin: 1px;
+  padding-left: 3px;
 }
